@@ -1,0 +1,28 @@
+{
+  "models": [
+    {
+      "path": "unet/flux1-schnell-Q4_K_S.gguf",
+      "bytes": 6783943712,
+      "sha256": "4fd16477b3a5296d0cf722c4b92a9fd7f30d09ac7495826e4465d8de9c9fd973",
+      "source": "https://huggingface.co/city96/FLUX.1-schnell-gguf"
+    },
+    {
+      "path": "clip/clip_l.safetensors",
+      "bytes": 246144152,
+      "sha256": "660c6f5b1abae9dc498ac2d21e1347d2abdb0cf6c0c0c8576cd796491d9a6cdd",
+      "source": "https://huggingface.co/comfyanonymous/flux_text_encoders"
+    },
+    {
+      "path": "clip/t5-v1_1-xxl-encoder-Q4_K_M.gguf",
+      "bytes": 2896123072,
+      "sha256": "6be2b0b7e2de7cf2919340c88cb802a103a997ce46c53131cec91958c1db1af4",
+      "source": "https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf"
+    },
+    {
+      "path": "vae/ae.safetensors",
+      "bytes": 167666902,
+      "sha256": "f5b59a26851551b67ae1fe58d32e76486e1e812def4696a4bea97f16604d40a3",
+      "source": "https://huggingface.co/sayakpaul/FLUX.1-merged/tree/main/vae"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+# The repository contains workspace definitions, not local data or installed software.
+/*
+!/.gitignore
+!/.gitattributes
+!/AGENTS.md
+!/README.md
+!/assets/
+!/tasks/
+!/workflows/
+!/platforms/
+!/docs/
+
+# Track asset metadata and tooling, never asset binaries.
+/assets/*
+!/assets/README.md
+!/assets/catalog.json
+!/assets/catalog.py
+!/assets/originals/
+/assets/originals/*
+!/assets/originals/.gitkeep
+!/assets/models/
+/assets/models/*
+!/assets/models/comfyui/
+/assets/models/comfyui/*
+!/assets/models/comfyui/.gitkeep
+!/assets/rigs/
+/assets/rigs/*
+!/assets/rigs/.gitkeep
+
+# Task content is always private to the local machine.
+/tasks/*
+!/tasks/README.md
+!/tasks/_template/
+/tasks/_template/**
+!/tasks/_template/**/
+!/tasks/_template/**/.gitkeep
+
+# Only workflows with validation evidence are portable.
+/workflows/**
+!/workflows/README.md
+!/workflows/comfyui/
+/workflows/comfyui/*
+!/workflows/comfyui/README.md
+!/workflows/comfyui/validated/
+/workflows/comfyui/validated/*
+!/workflows/comfyui/validated/flux-schnell-gguf/
+!/workflows/comfyui/validated/flux-schnell-gguf/*.json
+!/workflows/comfyui/validated/flux-schnell-gguf/*.md
+
+# Installed platforms are separate upstream repositories.
+/platforms/*
+!/platforms/README.md
+!/platforms/comfyui.lock.json
+!/platforms/comfyui-model-paths.yaml
+
+/docs/**
+!/docs/**/
+!/docs/**/*.md
+!/docs/**/*.yaml
+
+**/__pycache__/
+**/*.pyc
