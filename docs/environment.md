@@ -6,4 +6,4 @@
 
 新 Linux + NVIDIA 虚拟机的安装命令见 [部署说明](deploy-linux.md)。本机旧 ComfyUI 检出仍可用于历史任务，但不作为可迁移环境的版本依据；本仓库不携带其补丁、硬编码 Windows 路径的脚本或试验工作流。
 
-MiniMax-H3 的开源权重尚未在本工作区完成实际生成验收，因此现在仅引用 [ComfyUI 官方 H3 工作流指南](https://docs.comfy.org/tutorials/video/minimax/minimax-h3)。完成新机器实测后，再将对应工作流和验证证据加入 `workflows/comfyui/validated/`。
+MiniMax-H3 的开源权重已在远程 Linux + RTX 4090 机器上完成全流程真实端到端生成验收，对应工作流和验证证据已收录于 `workflows/comfyui/validated/minimax-h3-t2v/`。
