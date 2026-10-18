@@ -61,4 +61,4 @@ platforms/ComfyUI/.venv/bin/hf download Comfy-Org/MiniMax-H3 \
 | `vae/minimax_h3_audio_vae_fp32.safetensors` | 605254808 | `8e505d95dd1561d47abd43d4238fd40d9bb1ae9e147ed0a4cba778d76ae4db48` |
 | `loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors` | 1956193000 | `2339acdf19bfe123f46b971ea35d367a84adb85de43627e1eceafa5a5b2b111e` |
 
-官方模板顶层 `ResolutionSelector` 默认处于快速预览尺寸（`0.2` MP，`608×352`）；跑全尺寸 16:9 原生画幅（`1344×768`，短边 768px）时需将 `Megapixels` 设为 `0.98`（勿用 `1.0`，其输出 `1376×768` 超出模型 `1344×768` 像素上限）。模型文件不加入 Git。该工作流待新机器完成真实生成验收后，再标为本仓库的已验证工作流。
+官方模板顶层 `ResolutionSelector` 默认处于快速预览尺寸（`0.2` MP，`608×352`）；跑全尺寸 16:9 原生画幅（`1344×768`，短边 768px）时需将 `Megapixels` 设为 `0.98`（勿用 `1.0`，其输出 `1376×768` 超出模型 `1344×768` 像素上限）。模型文件不加入 Git。该工作流已在远程全新 Linux + RTX 4090 机器上完成真实生成验收，收录至 `workflows/comfyui/validated/minimax-h3-t2v/`。

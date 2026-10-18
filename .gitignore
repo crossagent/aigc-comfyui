@@ -46,6 +46,9 @@
 !/workflows/comfyui/validated/flux-schnell-gguf/
 !/workflows/comfyui/validated/flux-schnell-gguf/*.json
 !/workflows/comfyui/validated/flux-schnell-gguf/*.md
+!/workflows/comfyui/validated/minimax-h3-t2v/
+!/workflows/comfyui/validated/minimax-h3-t2v/*.json
+!/workflows/comfyui/validated/minimax-h3-t2v/*.md
 
 # Installed platforms are separate upstream repositories.
 /platforms/*
