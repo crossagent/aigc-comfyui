@@ -1,6 +1,6 @@
 # Linux + NVIDIA 部署
 
-此文档给新虚拟机上的操作者提供可复现的安装路径；模型和素材按需从原始来源或资产存储恢复。以下命令假定已安装 Git、Python 3.12 或 3.13、Python venv，并且 NVIDIA 驱动可由 `nvidia-smi` 检测。本仓库为私有仓库，新机器克隆前需要配置 GitHub 登录或只读 deploy key；凭据不可写入本仓库。
+此文档给新虚拟机上的操作者提供可复现的安装路径；模型和素材按需从原始来源或资产存储恢复。以下命令假定已安装 Git、Python 3.12 或 3.13、Python venv，并且 NVIDIA 驱动可由 `nvidia-smi` 检测。
 
 ## 获取工程和 ComfyUI
 
@@ -22,17 +22,18 @@ platforms/ComfyUI/.venv/bin/python -c 'import torch; assert torch.cuda.is_availa
 ## 接入本仓库目录
 
 ```bash
-mkdir -p assets/comfyui-input assets/comfyui-output
 mkdir -p assets/models/comfyui/{diffusion_models,text_encoders,vae,loras,unet,clip}
 python3 assets/catalog.py verify
+task_name=example-task
+mkdir -p "tasks/$task_name/comfyui/input" "tasks/$task_name/comfyui/output"
 cd platforms/ComfyUI
 .venv/bin/python main.py --listen 127.0.0.1 --port 8188 \
   --extra-model-paths-config ../comfyui-model-paths.yaml \
-  --input-directory ../../assets/comfyui-input \
-  --output-directory ../../assets/comfyui-output
+  --input-directory "../../tasks/$task_name/comfyui/input" \
+  --output-directory "../../tasks/$task_name/comfyui/output"
 ```
 
-模型路径配置以其 YAML 文件所在的 `platforms/` 目录解析相对路径。远程机器可以通过 SSH 端口转发访问 Web 界面：`ssh -L 8188:127.0.0.1:8188 <远程登录信息>`，然后在本机打开 `http://127.0.0.1:8188`。不要将未认证的 ComfyUI 服务直接公开到互联网。
+将 `example-task` 换成当前任务在 `tasks/` 下的路径；每个任务使用自己的 ComfyUI 输入与输出目录。长期复用的原件留在 `assets/`，需要时使用 `python3 assets/catalog.py stage <资产ID> --task <任务路径>` 投放到任务输入目录。模型路径配置以其 YAML 文件所在的 `platforms/` 目录解析相对路径。远程机器可以通过 SSH 端口转发访问 Web 界面：`ssh -L 8188:127.0.0.1:8188 <远程登录信息>`，然后在本机打开 `http://127.0.0.1:8188`。不要将未认证的 ComfyUI 服务直接公开到互联网。
 
 ## 工作流与模型
 

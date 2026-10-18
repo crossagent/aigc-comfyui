@@ -4,4 +4,4 @@
 
 `comfyui-model-paths.yaml` 把本仓库的 `assets/models/comfyui/` 添加为 ComfyUI 模型搜索路径。安装与运行方法见 [Linux 部署说明](../docs/deploy-linux.md)。本机历史安装、旧脚本、虚拟环境、缓存及日志不进入主仓库。
 
-输入和输出目录通过 ComfyUI 启动参数指向 `assets/comfyui-input/` 和 `assets/comfyui-output/`。模型与资产二进制文件保持在 Git 之外。
+输入和输出目录通过 ComfyUI 启动参数指向当前任务的 `tasks/<任务>/comfyui/input/` 和 `tasks/<任务>/comfyui/output/`。`assets/` 只存长期资源，具体任务数据和模型、资产二进制文件保持在 Git 之外。

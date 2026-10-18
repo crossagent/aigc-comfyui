@@ -5,8 +5,8 @@
 | 路径 | 纳入 Git | 留在机器或外部资产存储 |
 | --- | --- | --- |
 | 根目录 | `README.md`、`AGENTS.md`、Git 配置 | 密钥、`.env`、编辑器状态 |
-| `assets/` | README、目录占位、`catalog.json`、`catalog.py` | 原始素材、模型权重、骨架、ComfyUI 输入与输出 |
-| `tasks/` | 通用说明与 `_template/` 空目录结构 | 所有具体任务目录及其输入、参数、提示词、实验、评估与结果 |
+| `assets/` | README、目录占位、`catalog.json`、`catalog.py` | 长期复用的原始素材、模型权重和骨架 |
+| `tasks/` | 通用说明与 `_template/` 空目录结构 | 所有具体任务目录，包括各任务的 ComfyUI 输入、输出、参数、提示词、实验与评估 |
 | `workflows/` | 目录说明、`validated/` 下的工作流与依赖、验收证据 | 未验证的界面图、API 图、历史工作流 |
 | `platforms/` | README、ComfyUI 版本锁与模型路径配置 | 上游源码、虚拟环境、本机脚本、缓存与日志 |
 | `docs/` | 环境、部署与 Git 范围说明 | 本机历史审计 |

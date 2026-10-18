@@ -10,4 +10,4 @@
 | [platforms/](platforms/README.md) | 工具安装和工作区维护脚本 |
 | [docs/](docs/git-scope.md) | Git 范围与部署说明 |
 
-模型和素材保存在 `assets/`，任务专属的输入与生成结果保存在 `tasks/`。经验证的 ComfyUI 工作流位于 `workflows/comfyui/validated/`，ComfyUI 源码安装目录为 `platforms/ComfyUI/`。具体目录约定见各目录的 README。
+长期复用的模型和素材保存在 `assets/`；每次任务的 ComfyUI 输入与输出保存在对应的 `tasks/<任务>/comfyui/`。经验证的 ComfyUI 工作流位于 `workflows/comfyui/validated/`，ComfyUI 源码安装目录为 `platforms/ComfyUI/`。具体目录约定见各目录的 README。

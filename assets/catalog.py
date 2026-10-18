@@ -14,7 +14,7 @@ from typing import TypedDict, cast
 
 ROOT = Path(__file__).resolve().parent.parent
 ORIGINALS = ROOT / "assets" / "originals"
-INPUT = ROOT / "assets" / "comfyui-input"
+TASKS = ROOT / "tasks"
 CATALOG = ROOT / "assets" / "catalog.json"
 ASSET_ID = re.compile(r"[a-z0-9][a-z0-9._-]*\Z")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
@@ -141,23 +141,42 @@ def verify(asset_id: str | None) -> None:
         print("Catalog is empty; no reusable assets have been registered")
 
 
-def stage(asset_id: str) -> None:
+def task_input_path(task_name: str) -> Path:
+    relative = Path(task_name)
+    tasks_root = TASKS.resolve()
+    task = (TASKS / relative).resolve()
+    if relative.is_absolute() or task == tasks_root or not task.is_relative_to(tasks_root):
+        raise CatalogError(f"Task must be a directory under {TASKS}; received {task_name!r}")
+    if relative.parts[0] == "_template" or not task.is_dir():
+        raise CatalogError(f"Task directory does not exist or is the template: {task}")
+    input_path = (task / "comfyui" / "input").resolve()
+    if not input_path.is_relative_to(task):
+        raise CatalogError(f"ComfyUI input escapes task directory: {input_path}")
+    return input_path
+
+
+def stage(asset_id: str, task_name: str) -> None:
     assets = load_catalog()["assets"]
     if asset_id not in assets:
         raise CatalogError(f"Unknown asset ID: {asset_id}")
     source = check_asset(asset_id, assets[asset_id])
-    INPUT.mkdir(parents=True, exist_ok=True)
-    target = INPUT / f"{asset_id}{source.suffix.lower()}"
+    input_path = task_input_path(task_name)
+    input_path.mkdir(parents=True, exist_ok=True)
+    target = input_path / f"{asset_id}{source.suffix.lower()}"
+    if target.is_symlink():
+        raise CatalogError(f"ComfyUI input must not be a symbolic link: {target}")
     if target.exists():
         if not target.is_file() or digest(target) != assets[asset_id]["sha256"]:
             raise CatalogError(f"ComfyUI input already exists with different content: {target}")
     else:
-        temporary = INPUT / f".{target.name}.tmp"
+        temporary = input_path / f".{target.name}.tmp"
+        if temporary.exists() or temporary.is_symlink():
+            raise CatalogError(f"Temporary ComfyUI input already exists: {temporary}")
         shutil.copyfile(source, temporary)
         if digest(temporary) != assets[asset_id]["sha256"]:
             raise CatalogError(f"Copy failed SHA-256 verification: {temporary}")
         temporary.replace(target)
-    print(f"ComfyUI input: {target.name}")
+    print(f"ComfyUI task input: {target}")
 
 
 def main() -> int:
@@ -169,8 +188,9 @@ def main() -> int:
     add.add_argument("--source", required=True, help="Origin or provenance description")
     inspect = commands.add_parser("verify", help="Check registered binaries against Git-tracked hashes")
     inspect.add_argument("asset_id", nargs="?")
-    use = commands.add_parser("stage", help="Copy a verified asset into ComfyUI's shared input directory")
+    use = commands.add_parser("stage", help="Copy a verified asset into one task's ComfyUI input directory")
     use.add_argument("asset_id")
+    use.add_argument("--task", required=True, help="Existing task path relative to tasks/")
     arguments = parser.parse_args()
     try:
         if arguments.command == "register":
@@ -178,7 +198,7 @@ def main() -> int:
         elif arguments.command == "verify":
             verify(arguments.asset_id)
         elif arguments.command == "stage":
-            stage(arguments.asset_id)
+            stage(arguments.asset_id, arguments.task)
     except (CatalogError, OSError, json.JSONDecodeError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
