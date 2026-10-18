@@ -14,11 +14,11 @@ python3 -c 'import sys; assert sys.version_info[:2] in {(3, 12), (3, 13)}, f"Use
 python3 -m venv platforms/ComfyUI/.venv
 platforms/ComfyUI/.venv/bin/python -m pip install --upgrade pip
 platforms/ComfyUI/.venv/bin/python -m pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu130
-platforms/ComfyUI/.venv/bin/python -m pip install -r platforms/ComfyUI/requirements.txt
+platforms/ComfyUI/.venv/bin/python -m pip install -r platforms/ComfyUI/requirements.txt brotlicffi "huggingface_hub[cli]"
 platforms/ComfyUI/.venv/bin/python -c 'import torch; assert torch.cuda.is_available(), "CUDA unavailable"; print(torch.__version__, torch.cuda.get_device_name(0))'
 ```
 
-上游 [ComfyUI 手动安装说明](https://github.com/Comfy-Org/ComfyUI/blob/v0.41.0/README.md#manual-install-windows-linux) 推荐 NVIDIA 使用稳定版 CUDA 13.0 PyTorch。若系统默认 `python3` 不是 3.12 或 3.13（例如 3.14），需显式调用 `python3.12 -m venv platforms/ComfyUI/.venv` 或 `uv venv --python 3.12 platforms/ComfyUI/.venv`。GPU 驱动、显存及 Python 版本必须与所选 PyTorch 发行版匹配；不通过更换模型或盲目调整参数掩盖安装错误。
+上游 [ComfyUI 手动安装说明](https://github.com/Comfy-Org/ComfyUI/blob/v0.41.0/README.md#manual-install-windows-linux) 推荐 NVIDIA 使用稳定版 CUDA 13.0 PyTorch。若系统默认 `python3` 不是 3.12 或 3.13（例如 3.14），需显式调用 `python3.12 -m venv platforms/ComfyUI/.venv` 或 `uv venv --python 3.12 platforms/ComfyUI/.venv`。安装 `brotlicffi` 可规避部分 Linux 主机预装 C 版 `brotli` 导致的 `httpx2` 解压参数异常。国内机器下载模型前建议设置国内镜像：`export HF_ENDPOINT=https://hf-mirror.com`；pip 亦可使用国内源（如 `https://mirrors.aliyun.com/pypi/simple/`）。GPU 驱动、显存及 Python 版本必须与所选 PyTorch 发行版匹配；不通过更换模型或盲目调整参数掩盖安装错误。
 
 ## 接入本仓库目录
 
@@ -32,6 +32,7 @@ cd platforms/ComfyUI
   --extra-model-paths-config ../comfyui-model-paths.yaml \
   --input-directory "../../tasks/$task_name/comfyui/input" \
   --output-directory "../../tasks/$task_name/comfyui/output"
+# 可选启动冒烟测试验证环境与目录加载：在上述命令后附加 --quick-test-for-ci 并在通过后自动退出
 ```
 
 将 `example-task` 换成当前任务在 `tasks/` 下的路径；每个任务使用自己的 ComfyUI 输入与输出目录。长期复用的原件留在 `assets/`，需要时使用 `python3 assets/catalog.py stage <资产ID> --task <任务路径>` 投放到任务输入目录。模型路径配置已设 `is_default: true`，以其 YAML 文件所在的 `platforms/` 目录解析相对路径，使 ComfyUI 默认读写 `assets/models/comfyui/`。远程机器可以通过 SSH 端口转发访问 Web 界面：`ssh -L 8188:127.0.0.1:8188 <远程登录信息>`，然后在本机打开 `http://127.0.0.1:8188`。不要将未认证的 ComfyUI 服务直接公开到互联网。
